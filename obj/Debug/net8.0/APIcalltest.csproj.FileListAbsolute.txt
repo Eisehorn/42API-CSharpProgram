@@ -34,3 +34,4 @@
 /Users/fgiuliano/Desktop/42Roma/CsharpAPI/APIcalltest/obj/Debug/net8.0/APIcalltest.genruntimeconfig.cache
 /Users/fgiuliano/Desktop/42Roma/CsharpAPI/APIcalltest/obj/Debug/net8.0/ref/APIcalltest.dll
 /Users/fgiuliano/Desktop/42Roma/CsharpAPI/APIcalltest/bin/Debug/net8.0/Newtonsoft.Json.dll
+/Users/fgiuliano/Desktop/42Roma/CsharpAPI/APIcalltest/obj/Debug/net8.0/APIcalltest.sourcelink.json
