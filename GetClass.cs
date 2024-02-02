@@ -105,13 +105,12 @@ public class GetClass
 		dynamic parsedData = JsonConvert.DeserializeObject<dynamic>(json)!;
 		return parsedData;
 	}
-	public static async Task GetFunction(TokenClass token)
+	public static async Task GetFunction(TokenClass token, string url)
 	{
 		using (HttpClient client = new HttpClient())
 		{
 			List<string> allResponses = new List<string>();
 			client.DefaultRequestHeaders.Add("Authorization", $"Bearer {token.access_token}");
-			string url = $"https://api.intra.42.fr";
 			while (true)
 			{
 				url = await CheckIfCorrectUrl(client);

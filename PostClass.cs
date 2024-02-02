@@ -5,7 +5,7 @@ namespace APIcalltest;
 
 public class PostClass
 {
-	private static void NumberInput(string str, Dictionary<string, object?> dictionary, string? valuekey)
+	protected static void NumberInput(string str, Dictionary<string, object?> dictionary, string? valuekey)
 	{
 		while (true)
 		{
@@ -30,7 +30,7 @@ public class PostClass
 			}
 		}
 	}
-	private static void StringInput(string str, Dictionary<string, object?> dictionary, string? valuekey)
+	protected static void StringInput(string str, Dictionary<string, object?> dictionary, string? valuekey)
 	{
 		Console.WriteLine($"Enter your {str}");
 		valuekey = Console.ReadLine();
@@ -63,30 +63,12 @@ public class PostClass
 						break;
 					}
 				}
-			}
-		}
-	}
-
-	private static string ElementToCreate()
-	{
-		string? elementToCreate;
-		while (true)
-		{
-			Console.WriteLine("Enter the element to create:");
-			elementToCreate = Console.ReadLine();
-			if (string.IsNullOrEmpty(elementToCreate))
-			{
-				Console.WriteLine("Input cannot be empty.");
-			}
-			else
-			{
 				break;
 			}
 		}
-		return elementToCreate;
 	}
 
-	private static void DataInput(string str, Dictionary<string, object?> dictionary, string? valuekey, PostData data)
+	protected static void DataInput(string str, Dictionary<string, object?> dictionary, string? valuekey, PostData data)
 	{
 		while (true)
 		{
@@ -132,7 +114,26 @@ public class PostClass
 			Console.WriteLine("Input error. Please answer numbers or strings.");
 		}
 	}
-	private static void InnerDictionary(string str, Dictionary<string, object?> dictionary, string? valuekey)
+	
+	protected static string ElementToCreate()
+	{
+		string? elementToCreate;
+		while (true)
+		{
+			Console.WriteLine("Enter the element to create:");
+			elementToCreate = Console.ReadLine();
+			if (string.IsNullOrEmpty(elementToCreate))
+			{
+				Console.WriteLine("Input cannot be empty.");
+			}
+			else
+			{
+				break;
+			}
+		}
+		return elementToCreate;
+	}
+	protected static void InnerDictionary(string str, Dictionary<string, object?> dictionary, string? valuekey)
 	{
 		while (true)
 		{
@@ -173,7 +174,7 @@ public class PostClass
 		}
 	}
 	
-	private static StringContent CreatePostContent()
+	protected static StringContent CreateContent()
 	{
 		Console.WriteLine("Enter all the required fields here separated by a comma.\nUsage example: campus, first_name, last_name (Do not put an empty string)");
 		var fields = Console.ReadLine()!;
@@ -212,30 +213,27 @@ public class PostClass
 			}
 		}
 	}
-
-	private static void CheckUrlAndRespond(bool success, string call)
-	{
-		if (success)
-		{
-			Console.WriteLine($"{call} call ended successfully");
-		}
-		else
-		{
-			Console.WriteLine($"There was a problem with your {call} call");
-		}
-	}
-	public static async Task PostFunction(TokenClass token)
+	
+	public static async Task PostFunction(TokenClass token, string url)
 	{
 		using (HttpClient client = new HttpClient())
 		{
 			client.DefaultRequestHeaders.Add("Authorization",$"Bearer {token.access_token}");
-			string url = "https://api.intra.42.fr";
-			Console.WriteLine("Insert POST request endpoint:");
-			url += Console.ReadLine();
-			var content = CreatePostContent();
+			while (true)
+			{
+				Console.WriteLine("Insert POST request endpoint:");
+				string? endpoint = Console.ReadLine();
+				if (endpoint == null)
+				{
+					continue;
+				}
+				url += endpoint;
+				break;
+			}
+			var content = CreateContent();
 			HttpResponseMessage response = await client.PostAsync(url, content);
 			Console.WriteLine("\n\n" + GetClass.ParseJson(await content.ReadAsStringAsync()));
-			CheckUrlAndRespond(response.IsSuccessStatusCode, "POST");
+			Program.CheckUrlAndRespond(response.IsSuccessStatusCode, "POST");
 		}
 	}
 }

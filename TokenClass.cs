@@ -37,7 +37,6 @@ public class TokenClass
 				{
 					Console.WriteLine($"Error: {response.StatusCode}");
 				}
-
 				return null;
 			}
 			catch (Exception error)

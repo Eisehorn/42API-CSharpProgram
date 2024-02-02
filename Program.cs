@@ -16,6 +16,17 @@ public class PostData()
 
 class Program
 {
+	public static void CheckUrlAndRespond(bool success, string call)
+	{
+		if (success)
+		{
+			Console.WriteLine($"{call} call ended successfully");
+		}
+		else
+		{
+			Console.WriteLine($"There was a problem with your {call} call");
+		}
+	}
 	private static void ExitFunction()
 	{
 		Environment.Exit(0);
@@ -38,14 +49,20 @@ class Program
 		string? userInput = null;
 		while (userInput != "EXIT")
 		{
-			Console.WriteLine("Enter your desired call: GET, POST, DELETE. Enter EXIT to exit the program.");
+			if (token == null)
+			{
+				Console.WriteLine("Insert your .env file in the same folder as APIcalltest and configure it to be like the .envexample!");
+				break;
+			}
+			Console.WriteLine("Enter your desired call: GET, POST, PATCH or DELETE. Enter EXIT to exit the program.");
 			userInput = Console.ReadLine()?.ToUpperInvariant();
+			string url = "https://api.intra.42.fr";
 			if (token != null)
 			{
 				switch (userInput)
 				{
 					case "GET":
-						await GetClass.GetFunction(token);
+						await GetClass.GetFunction(token, url);
 						string? anotherCall = null;
 						while (anotherCall != "YES" && anotherCall != "NO")
 						{
@@ -54,17 +71,40 @@ class Program
 						break;
 
 					case "POST":
-					 	await PostClass.PostFunction(token);
+					 	await PostClass.PostFunction(token, url);
 						anotherCall = null;
 					    while (anotherCall != "YES" && anotherCall != "NO")
 					    {
 						    anotherCall = AnotherCall();
 					    }
 						break;
-					//
-					// case "DELETE":
-					// 	await deleteFunction(token);
-					// 	break;
+					
+					case "PUT" :
+						await PutClass.PutFunction(token, url);
+						anotherCall = null;
+						while (anotherCall != "YES" && anotherCall != "NO")
+						{
+							anotherCall = AnotherCall();
+						}
+						break;
+					
+					case "PATCH":
+						await PatchClass.PatchFunction(token, url);
+						anotherCall = null;
+						while (anotherCall != "YES" && anotherCall != "NO")
+						{
+							anotherCall = AnotherCall();
+						}
+						break;
+					
+					case "DELETE":
+					 	await DeleteClass.DeleteFunction(token, url);
+						anotherCall = null;
+						while (anotherCall != "YES" && anotherCall != "NO")
+						{
+							anotherCall = AnotherCall();
+						}
+						break;
 
 					case "EXIT":
 						ExitFunction();
