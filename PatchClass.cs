@@ -23,7 +23,7 @@ public class PatchClass : PostClass
 			var content = CreateContent();
 			HttpResponseMessage response = await client.PatchAsync(url, content);
 			Console.WriteLine("\n\n" + GetClass.ParseJson(await content.ReadAsStringAsync()));
-			Program.CheckUrlAndRespond(response.IsSuccessStatusCode, "PATCH");
+			Program.CheckUrlAndRespond(response.StatusCode,response.IsSuccessStatusCode, "PATCH");
 		}
 	}
 }

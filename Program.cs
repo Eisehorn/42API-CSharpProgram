@@ -16,7 +16,7 @@ public class PostData()
 
 class Program
 {
-	public static void CheckUrlAndRespond(bool success, string call)
+	public static void CheckUrlAndRespond(HttpStatusCode code, bool success, string call)
 	{
 		if (success)
 		{
@@ -24,7 +24,7 @@ class Program
 		}
 		else
 		{
-			Console.WriteLine($"There was a problem with your {call} call");
+			Console.WriteLine($"There was a problem with your {call} call, error code: {code}");
 		}
 	}
 	private static void ExitFunction()
@@ -71,14 +71,14 @@ class Program
 						break;
 
 					case "POST":
-					 	await PostClass.PostFunction(token, url);
+					    await PostClass.PostFunction(token, url);
 						anotherCall = null;
 					    while (anotherCall != "YES" && anotherCall != "NO")
 					    {
 						    anotherCall = AnotherCall();
 					    }
 						break;
-					
+
 					case "PUT" :
 						await PutClass.PutFunction(token, url);
 						anotherCall = null;
@@ -87,7 +87,7 @@ class Program
 							anotherCall = AnotherCall();
 						}
 						break;
-					
+
 					case "PATCH":
 						await PatchClass.PatchFunction(token, url);
 						anotherCall = null;
@@ -96,9 +96,9 @@ class Program
 							anotherCall = AnotherCall();
 						}
 						break;
-					
+
 					case "DELETE":
-					 	await DeleteClass.DeleteFunction(token, url);
+					    await DeleteClass.DeleteFunction(token, url);
 						anotherCall = null;
 						while (anotherCall != "YES" && anotherCall != "NO")
 						{
@@ -109,7 +109,7 @@ class Program
 					case "EXIT":
 						ExitFunction();
 						break;
-					
+
 					default:
 						Console.WriteLine("Invalid input. Please enter GET, POST, DELETE or EXIT.");
 						break;

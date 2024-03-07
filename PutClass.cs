@@ -21,7 +21,7 @@ public class PutClass : PostClass
 			var content = CreateContent();
 			HttpResponseMessage response = await client.PatchAsync(url, content);
 			Console.WriteLine("\n\n" + GetClass.ParseJson(await content.ReadAsStringAsync()));
-			Program.CheckUrlAndRespond(response.IsSuccessStatusCode, "PUT");
+			Program.CheckUrlAndRespond(response.StatusCode, response.IsSuccessStatusCode, "PUT");
 		}
 	}
 }

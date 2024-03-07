@@ -3,6 +3,8 @@ using Newtonsoft.Json;
 
 namespace APIcalltest;
 
+using System.Collections.Generic;
+
 public class GetClass
 {
 	private static dynamic? Data { get; set; }
@@ -14,11 +16,22 @@ public class GetClass
 		{
 			Console.WriteLine($"Result of page number {page}:");
 			page++;
-			Data = ParseJson(response);
-			Console.WriteLine(Data);
+			// if (response.Contains("c-piscine"))
+			// {
+			// 	continue;
+			// }
+			try
+			{
+				Data = ParseJson(response);
+				Console.WriteLine(Data);
+			}
+			catch (Exception)
+			{
+				return ;
+			}
 		}
 	}
-	private static void PrintResultFilename(List<string> allResponses)
+	private static void PrintResultFilename(List<string> allResponses, string? url)
 	{
 		Console.WriteLine("Enter the file name in which you want to save your output\nLeave it empty to print to the terminal");
 		string? output = Console.ReadLine();
@@ -37,7 +50,7 @@ public class GetClass
 			PrintResult(allResponses);
 		}
 	}
-	
+
 	private static string CheckNextLink(string nextlink)
 	{
 		string input = nextlink;
@@ -119,21 +132,29 @@ public class GetClass
 					break;
 				}
 			}
+			int i = 0;
 			while (true)
 			{
 				HttpResponseMessage response = await client.GetAsync(url);
 				HttpContent responseContent = response.Content;
-				Console.WriteLine("Calls are being made, please wait...");
+				Console.WriteLine($"Call number {i++} is being made, please wait...");
 				if (response.IsSuccessStatusCode)
 				{
 					allResponses.Add(await responseContent.ReadAsStringAsync());
-					var nextlink = response.Headers.GetValues
-						("Link")?.FirstOrDefault(link => link.Contains("rel=\"next\""));
-					if (nextlink != null)
+					try
 					{
-						url = CheckNextLink(nextlink);
+						var nextlink = response.Headers.GetValues
+							("Link")?.FirstOrDefault(link => link.Contains("rel=\"next\""));
+						if (nextlink != null)
+						{
+							url = CheckNextLink(nextlink);
+						}
+						else
+						{
+							break;
+						}
 					}
-					else
+					catch (Exception)
 					{
 						break;
 					}
@@ -144,7 +165,7 @@ public class GetClass
 				}
 				Thread.Sleep(300);
 			}
-			PrintResultFilename(allResponses);
+			PrintResultFilename(allResponses, url);
 		}
 	}
 }

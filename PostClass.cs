@@ -201,16 +201,13 @@ public class PostClass
 				var jsonContent = new StringContent(json, Encoding.UTF8, "application/json");
 				return jsonContent;
 			}
-			else if (answer == "NO")
+			if (answer == "NO")
 			{
 				string json = JsonConvert.SerializeObject(dictionary);
 				var jsonContent = new StringContent(json, Encoding.UTF8, "application/json");
 				return jsonContent;
 			}
-			else
-			{
-				Console.WriteLine("Invalid input.");
-			}
+			Console.WriteLine("Invalid input.");
 		}
 	}
 	
@@ -233,7 +230,7 @@ public class PostClass
 			var content = CreateContent();
 			HttpResponseMessage response = await client.PostAsync(url, content);
 			Console.WriteLine("\n\n" + GetClass.ParseJson(await content.ReadAsStringAsync()));
-			Program.CheckUrlAndRespond(response.IsSuccessStatusCode, "POST");
+			Program.CheckUrlAndRespond(response.StatusCode, response.IsSuccessStatusCode, "POST");
 		}
 	}
 }

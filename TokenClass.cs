@@ -33,10 +33,7 @@ public class TokenClass
 					TokenClass? token = JsonConvert.DeserializeObject<TokenClass>(result);
 					return token;
 				}
-				else
-				{
-					Console.WriteLine($"Error: {response.StatusCode}");
-				}
+				Console.WriteLine($"Error: {response.StatusCode}");
 				return null;
 			}
 			catch (Exception error)
